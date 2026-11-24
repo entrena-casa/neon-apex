@@ -13,7 +13,7 @@ const NAMES = ['VÍBORA', 'KAITO', 'LA REINA', 'TURBO', 'FANTASMA', 'NOVA', 'ÓX
 
 export const race = { on: false, cars: [], player: null, ghost: null, remotes: [] };
 
-const tagFor = (name, hex) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTex(name, hex), depthWrite: false, depthTest: false, transparent: true })); s.scale.set(7, 1.3, 1); s.renderOrder = 5; return s; };
+const tagFor = (name, hex) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTex(name, hex), depthWrite: false, depthTest: false, transparent: true })); s.scale.set(5, 0.95, 1); s.renderOrder = 5; return s; };
 
 export function clearRace() {
   for (const c of race.cars) { scene.remove(c.mesh); if (c.tag) scene.remove(c.tag); }
@@ -42,10 +42,11 @@ export function setupRace(opts) {
     let k = 0;
     const pool = CARS.filter(c => c.id !== 'fantasma' || opts.diff === 'locura');
     const list = opts.aiList || [];
+    const names = [...NAMES].sort(() => Math.random() - 0.5);
     if (!opts.aiList) for (let s = 0; s < total; s++) {
       if (s === pSlot) continue;
       const sp = pool[Math.min(pool.length - 1, Math.floor(Math.random() * (opts.diff === 'facil' ? 3 : opts.diff === 'locura' ? pool.length : 5)))];
-      list.push({ car: sp.id, paint: PAINTS[(k * 3 + 1) % PAINTS.length], name: NAMES[(k + Math.floor(Math.random() * 3)) % NAMES.length], slot: s }); k++;
+      list.push({ car: sp.id, paint: PAINTS[(k * 3 + 1) % PAINTS.length], name: names[k % names.length], slot: s }); k++;
     }
     list.forEach((a, k) => {
       const sp = carById(a.car), hex = a.paint;
@@ -75,7 +76,7 @@ function place(c, [i, lat]) {
 }
 
 // ================== IA ==================
-function aiControl(c, dt) {
+export function aiControl(c, dt) {
   const D = race.diff, n = track.n, P = track.P, sp = Math.max(Math.abs(c.vf), 6);
   const look = Math.floor(clamp(sp * 0.5, 7, 34) / 2);
   const ti = (c.ti + look) % n;
@@ -149,7 +150,7 @@ export function updateRace(dt, playerCtl, ev) {
       stepCar(c, ctl, dt); c.braking = ctl.throttle < 0;
     }
     poseCar(c, dt, !isTouch || c.isPlayer || c.pos.distanceToSquared(P.pos) < 2500);
-    if (c.tag) c.tag.position.set(c.pos.x, c.pos.y + 3, c.pos.z);
+    if (c.tag) { c.tag.position.set(c.pos.x, c.pos.y + 2.6, c.pos.z); const d = c.tag.position.distanceTo(G.camPos || c.pos); c.tag.material.opacity = Math.min(1, Math.max(0, (d - 9) / 10)); }
   }
   // choques
   const all = race.cars.concat(race.remotes);

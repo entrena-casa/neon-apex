@@ -9,7 +9,7 @@ export const TRACKS = [
   {
     id: 'distrito', name: 'DISTRITO NEÓN', kind: 'CALLEJERO', mood: 'NOCHE · LLUVIA', theme: 'city', width: 15,
     desc: 'Calles mojadas, curvas de 90° y una chicane traicionera. Los reflejos te engañan.',
-    medals: [62, 68, 76], laps: 3,
+    medals: [25.8, 27.7, 30.1], laps: 3,
     pts: [[0, 0, 0], [220, 0, 0], [262, 0, 32], [262, 0, 118], [232, 0, 150], [152, 0, 152], [122, 0, 184], [122, 0, 280], [86, 0, 312], [-58, 0, 312], [-90, 0, 282], [-90, 0, 202], [-60, 0, 172], [-20, 0, 152], [-12, 0, 112], [-42, 0, 82], [-120, 0, 72], [-152, 0, 42], [-140, 0, 6], [-100, 0, -6]],
     boosts: [[0.04, 0], [0.33, 0.3], [0.58, -0.3]],
     env: { sky: [0x05010f, 0x1a0636, 0x6a0a48], fog: [0x1a0830, 0.0042], sunCol: 0x8899ff, sunI: 0.5, sunDir: [-0.3, 0.8, 0.4], hemi: [0x6a48ff, 0x14002a, 0.75], rain: 0.85, wet: 1, stars: true, bloom: 0.95, exposure: 1.05, neon: [0x00f0ff, 0xff2bd6, 0x9d4dff] },
@@ -17,7 +17,7 @@ export const TRACKS = [
   {
     id: 'bahia', name: 'BAHÍA DORADA', kind: 'COSTERO', mood: 'ATARDECER', theme: 'bay', width: 16,
     desc: 'Rectas sobre el mar y un puente gigante. Rebufo, nitro y frenadas a 300 por hora.',
-    medals: [74, 81, 90], laps: 3,
+    medals: [25.7, 27.6, 30.0], laps: 3,
     pts: [[0, 0, 0], [300, 0, 0], [410, 3, 50], [462, 7, 170], [432, 11, 290], [322, 15, 352], [182, 9, 380], [60, 3, 418], [-80, 1, 400], [-180, 2, 330], [-202, 3, 222], [-150, 2, 140], [-70, 1, 100], [-92, 0, 40], [-56, 0, 2]],
     boosts: [[0.02, 0], [0.37, 0], [0.7, -0.4]],
     env: { sky: [0x2a1a5a, 0xff6a4a, 0xffc27a], fog: [0xd88a7a, 0.0016], sunCol: 0xffb070, sunI: 2.4, sunDir: [-0.85, 0.18, -0.5], hemi: [0xffb59a, 0x3a2050, 1.0], rain: 0, wet: 0.15, stars: false, bloom: 0.45, exposure: 0.95, sunDisc: true, neon: [0xff7a3d, 0xffd200, 0xff2bd6], water: -4 },
@@ -25,7 +25,7 @@ export const TRACKS = [
   {
     id: 'canon', name: 'CAÑÓN ROJO', kind: 'RALLY', mood: 'DÍA · CALOR', theme: 'canyon', width: 15,
     desc: 'Cambios de rasante, saltos y polvo. Si aterrizas torcido, se acabó.',
-    medals: [71, 78, 87], laps: 3,
+    medals: [21.2, 22.8, 24.8], laps: 3,
     pts: [[0, 0, 0], [100, 0, 0], [150, 8, 0], [176, 9, 0], [202, 1, 0], [282, -3, 12], [342, 0, 62], [362, 6, 142], [332, 12, 222], [262, 16, 262], [172, 14, 252], [122, 20, 202], [62, 27, 192], [10, 28, 214], [-40, 22, 238], [-82, 25, 250], [-162, 14, 222], [-202, 8, 152], [-192, 4, 72], [-142, 2, 22], [-72, 0, 0]],
     boosts: [[0.05, 0], [0.45, 0], [0.8, 0.3]],
     env: { sky: [0x2a6ad8, 0x8ab8f0, 0xf0d8b0], fog: [0xe8c8a0, 0.0014], sunCol: 0xfff0d8, sunI: 3.0, sunDir: [0.5, 0.75, 0.3], hemi: [0xbcd8ff, 0x8a5030, 1.1], rain: 0, wet: 0, stars: false, bloom: 0.3, exposure: 0.85, sunDisc: true, neon: [0xff7a1a, 0xffd200, 0x00f0ff] },
@@ -33,7 +33,7 @@ export const TRACKS = [
   {
     id: 'autopista', name: 'AUTOPISTA 8', kind: 'ALTA VELOCIDAD', mood: 'NOCHE · NIEBLA', theme: 'highway', width: 18,
     desc: 'Un ocho elevado sobre la ciudad con túnel de neón. Pasas por encima de ti mismo.',
-    medals: [70, 77, 86], laps: 3,
+    medals: [24.1, 25.9, 28.1], laps: 3,
     pts: [[-200, 12, -120], [-100, 12, -60], [0, 12, 0], [100, 14, 60], [200, 18, 118], [300, 22, 118], [362, 24, 40], [342, 26, -62], [262, 27, -120], [162, 27, -100], [62, 27, -42], [0, 27, 0], [-62, 25, 42], [-162, 20, 100], [-262, 16, 120], [-342, 14, 60], [-342, 12, -40], [-290, 12, -110]],
     boosts: [[0.08, 0], [0.5, 0], [0.62, 0.3]], tunnel: [0.22, 0.36],
     env: { sky: [0x02010a, 0x0a0626, 0x2a0a4a], fog: [0x120a2a, 0.0028], sunCol: 0x9aa0ff, sunI: 0.55, sunDir: [0.3, 0.8, -0.4], hemi: [0x5a48ff, 0x100020, 0.7], rain: 0, wet: 0.5, stars: true, bloom: 1.0, exposure: 1.05, neon: [0xff2bd6, 0x00f0ff, 0x39ff88] },
@@ -41,7 +41,7 @@ export const TRACKS = [
   {
     id: 'montana', name: 'PUERTO HELADO', kind: 'MONTAÑA', mood: 'AMANECER · NIEBLA', theme: 'mountain', width: 13,
     desc: 'Estrecho, con horquillas y un lago. Aquí gana el que sabe derrapar.',
-    medals: [80, 88, 98], laps: 3,
+    medals: [20.7, 22.2, 24.2], laps: 3,
     pts: [[0, 0, 0], [150, 6, 0], [185, 8, 8], [196, 10, 30], [182, 11, 50], [140, 13, 58], [40, 18, 60], [10, 19, 70], [0, 20, 90], [12, 21, 110], [50, 23, 118], [160, 30, 120], [190, 31, 130], [198, 32, 150], [185, 33, 170], [150, 35, 180], [60, 40, 182], [-30, 38, 192], [-110, 28, 162], [-152, 16, 102], [-142, 6, 40], [-82, 0, 0]],
     boosts: [[0.03, 0], [0.62, 0], [0.86, 0]],
     env: { sky: [0x3a4a8a, 0xd89ab8, 0xffd8b0], fog: [0xc8b8d0, 0.0035], sunCol: 0xffc8a0, sunI: 1.8, sunDir: [0.7, 0.25, -0.6], hemi: [0xd8d0ff, 0x304050, 1.0], rain: 0, wet: 0.3, stars: false, bloom: 0.45, exposure: 0.9, sunDisc: true, neon: [0x00f0ff, 0x9d4dff, 0xffffff], water: -2 },
@@ -212,12 +212,12 @@ const puddleShader = {
     float n(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f); return mix(mix(h(i),h(i+vec2(1,0)),u.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x), u.y); }
     void main(){
       vec2 p = vW.xz;
-      float pud = smoothstep(0.42, 0.62, n(p*0.07) * 0.65 + n(p*0.21) * 0.35);
+      float pud = smoothstep(0.5, 0.68, n(p*0.07) * 0.65 + n(p*0.21) * 0.35);
       float rip = sin(length(fract(p*0.5)-0.5)*40.0 - time*9.0) * 0.5 + 0.5;
-      vec4 uv = vUv; uv.xy += vec2(n(p*0.8+time), n(p*0.8-time)) * 0.6 + rip * 0.25;
+      vec4 uv = vUv; uv.xy += (vec2(n(p*0.6+time*0.3), n(p*0.6-time*0.3)) - 0.5) * 0.35 + (rip - 0.5) * 0.05 * pud;
       vec3 r = texture2DProj(tDiffuse, uv).rgb;
       float d = length(cameraPosition - vW); float f = exp(-fogD*fogD*d*d);
-      gl_FragColor = vec4(r * amt * (0.25 + 0.75 * pud) * f, 1.0);
+      gl_FragColor = vec4(r * amt * (0.15 + 0.85 * pud) * f, 1.0);
     }`
 };
 
@@ -274,7 +274,7 @@ export function buildTrack(def) {
     if (s < 0) return h;
     const ty = P[s].y - 0.7;
     if (theme === 'bay' && ty > 3) return Math.min(h, ty - 6); // puentes: el terreno no sube
-    const k = smooth(hw + 6, hw + 70, d);
+    const k = smooth(hw + 12, hw + 110, d);
     const near = theme === 'bay' ? ty : ty;
     return lerp(near, theme === 'bay' ? Math.min(h, near - 1) * 0.3 + h * 0.7 : h, k);
   };

@@ -2,7 +2,7 @@
 import { THREE, $, G, V3, clamp, lerp, wrapAngle, isTouch, scene, camera, composer, followShadow, updateParticles, clearParticles, updateRain, updateMsg, showMsg, toast, popup, fmtTime, emit, burst, QUALITY, setQuality, hexCss, sunDir } from './core.js';
 import { TRACKS, track, buildTrack, updateTrack, skyFollow, sky, sampleAt } from './tracks.js';
 import { CARS, carById, makeCarMesh, setPaint, PAINTS, statOf, respawn, chargeLevel } from './cars.js';
-import { race, setupRace, updateRace, clearRace, DIFFS, loadGhost } from './race.js';
+import { race, setupRace, updateRace, clearRace, DIFFS, loadGhost, aiControl } from './race.js';
 import { net, hostLobby, joinLobby, leave, updateMe, hostStart, spawnRemotes, placeRemote, updateNet, sendChat } from './net.js';
 import { sfx } from './audio.js';
 
@@ -334,7 +334,7 @@ function updateCamera(dt) {
     // menú: vuelo sobre el circuito / vista del coche en el garaje
     if (screen === 'garage' && preview) {
       const a = G.t * 0.35, p = preview.position;
-      camera.position.set(p.x + Math.sin(a) * 7.5, p.y + 2.4, p.z + Math.cos(a) * 7.5); camera.lookAt(p.x, p.y + 0.7, p.z);
+      camera.position.set(p.x + Math.sin(a) * 8, p.y + 2.6, p.z + Math.cos(a) * 8); camera.lookAt(p.x, p.y - 1.4, p.z);
       camera.fov = 50; camera.updateProjectionMatrix(); return;
     }
     flyF += dt * 9;
@@ -359,12 +359,13 @@ function updateCamera(dt) {
     const dist = (mode ? 9.5 : 6.2) + sp * 0.018, h = (mode ? 3.6 : 2.25) + sp * 0.006;
     const x = P.pos.x - Math.sin(camH) * dist, z = P.pos.z - Math.cos(camH) * dist;
     camPos.x = x; camPos.z = z; camPos.y = lerp(camPos.y, P.pos.y + h, 1 - Math.exp(-6 * dt));
+    if (track.terrainH) camPos.y = Math.max(camPos.y, track.terrainH(camPos.x, camPos.z) + 1.2);
     camera.position.copy(camPos);
     camLook.set(P.pos.x + Math.sin(camH) * 6, P.pos.y + 1.1, P.pos.z + Math.cos(camH) * 6);
   }
   if (G.shake > 0) { camera.position.x += (Math.random() - 0.5) * G.shake * 0.6; camera.position.y += (Math.random() - 0.5) * G.shake * 0.6; G.shake = Math.max(0, G.shake - dt * 2.5); }
   if (boost) { camera.position.x += (Math.random() - 0.5) * 0.05; camera.position.y += (Math.random() - 0.5) * 0.05; }
-  camera.lookAt(camLook);
+  camera.lookAt(camLook); G.camPos = camera.position;
   const fov = 66 + sp * 0.17 + (boost ? 11 : 0);
   camera.fov = lerp(camera.fov, fov, 1 - Math.exp(-4 * dt)); camera.updateProjectionMatrix();
 }
@@ -451,4 +452,6 @@ function frame() {
 ensureTrack(save.track);
 show('menu');
 frame();
-if (location.hash === '#dbg') window.dbg = { race, track, save, G, camera, startRace, openSelect, ensureTrack, net, TRACKS, show };
+if (location.hash === '#dbg') window.dbg = {
+  // simula sin dibujar; auto = el jugador conduce con la IA
+  sim(sec, auto = true) { const P = race.player; if (auto) P.ai = P.ai || { bias: 0, skill: 1, react: 0, nitroT: 0 }; const n = Math.round(sec * 60); for (let i = 0; i < n && race.on; i++) { const ctl = auto ? (race.go ? aiControl(P, 1 / 60) : { throttle: 0, steer: 0 }) : { throttle: 1, steer: 0 }; updateRace(1 / 60, ctl, ev); } return { t: race.t, lap: P.lap, best: race.best, laps: race.lapTimes, place: P.place, fin: P.finished, order: race.order && race.order.map(c => c.name + ':' + c.lap + (c.finished ? '*' + c.finishT.toFixed(1) : '')) }; }, race, track, save, G, camera, startRace, openSelect, ensureTrack, net, TRACKS, show };
