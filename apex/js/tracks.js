@@ -46,6 +46,46 @@ export const TRACKS = [
     boosts: [[0.03, 0], [0.62, 0], [0.86, 0]],
     env: { sky: [0x3a4a8a, 0xd89ab8, 0xffd8b0], fog: [0xc8b8d0, 0.0035], sunCol: 0xffc8a0, sunI: 1.8, sunDir: [0.7, 0.25, -0.6], hemi: [0xd8d0ff, 0x304050, 1.0], rain: 0, wet: 0.3, stars: false, bloom: 0.45, exposure: 0.9, sunDisc: true, neon: [0x00f0ff, 0x9d4dff, 0xffffff], water: -2 },
   },
+  {
+    id: 'horapunta', name: 'HORA PUNTA', kind: 'CALLEJERO', mood: 'ANOCHECER', theme: 'city', width: 15,
+    desc: 'Avenidas anchas, un gancho cerrado y la ciudad encendiéndose. Frena tarde en la última curva.',
+    medals: [28.5, 30.9, 33.5], laps: 3,
+    pts: [[0, 0, 0], [240, 0, 0], [290, 0, 30], [300, 0, 100], [270, 0, 150], [200, 0, 160], [170, 0, 200], [190, 0, 260], [160, 0, 310], [60, 0, 320], [-60, 0, 320], [-120, 0, 280], [-130, 0, 200], [-90, 0, 150], [-140, 0, 100], [-130, 0, 30], [-80, 0, 0]],
+    boosts: [[0.03, 0], [0.4, 0.3], [0.66, 0]],
+    env: { sky: [0x1a0a3a, 0x8a2a6a, 0xff8a5a], fog: [0x5a2a5a, 0.0026], sunCol: 0xffa070, sunI: 1.2, sunDir: [-0.8, 0.22, -0.4], hemi: [0xff9ad8, 0x200a30, 0.9], rain: 0, wet: 0.35, stars: false, bloom: 0.8, exposure: 1.0, sunDisc: true, neon: [0xff2bd6, 0xffd200, 0x00f0ff] },
+  },
+  {
+    id: 'tormenta', name: 'COSTA TORMENTA', kind: 'COSTERO', mood: 'NOCHE · TORMENTA', theme: 'bay', width: 16,
+    desc: 'La bahía de noche, con rayos y un mar negro. El puente resbala: no pises el nitro en la curva.',
+    medals: [26.4, 28.5, 30.9], laps: 3,
+    pts: [[0, 0, 0], [260, 0, 0], [380, 2, 60], [420, 6, 180], [360, 10, 280], [220, 12, 320], [100, 6, 300], [20, 2, 340], [-120, 1, 360], [-220, 2, 280], [-240, 3, 160], [-170, 2, 60], [-80, 0, 10]],
+    boosts: [[0.02, 0], [0.33, 0], [0.75, -0.3]],
+    env: { sky: [0x02030a, 0x0a1430, 0x1a2a4a], fog: [0x0a1428, 0.0034], sunCol: 0x88aaff, sunI: 0.45, sunDir: [0.4, 0.8, 0.3], hemi: [0x4a68ff, 0x02040a, 0.7], rain: 1, wet: 1, stars: false, bloom: 0.95, exposure: 1.05, neon: [0x00f0ff, 0x9d4dff, 0xffffff], water: -4 },
+  },
+  {
+    id: 'dunas', name: 'DUNAS DE FUEGO', kind: 'RALLY', mood: 'CREPÚSCULO · SALTOS', theme: 'canyon', width: 15,
+    desc: 'Saltos sobre las dunas con el cielo en llamas. Si aterrizas recto, el miniturbo es tuyo.',
+    medals: [23.0, 24.9, 27.0], laps: 3,
+    pts: [[0, 0, 0], [120, 0, 0], [170, 10, 0], [200, 11, 0], [230, 0, 0], [320, -2, 30], [360, 4, 110], [330, 14, 190], [250, 20, 230], [160, 20, 240], [90, 30, 200], [20, 32, 220], [-60, 22, 260], [-150, 14, 230], [-200, 10, 160], [-190, 4, 80], [-120, 1, 20], [-60, 0, 0]],
+    boosts: [[0.04, 0], [0.5, 0], [0.82, 0.3]],
+    env: { sky: [0x2a0a3a, 0xff3a2a, 0xffb040], fog: [0xb04a3a, 0.0022], sunCol: 0xff7040, sunI: 2.2, sunDir: [-0.7, 0.15, 0.6], hemi: [0xffa080, 0x401010, 1.0], rain: 0, wet: 0, stars: false, bloom: 0.6, exposure: 0.9, sunDisc: true, neon: [0xff2a4d, 0xffd200, 0xff8a1a] },
+  },
+  {
+    id: 'orbital', name: 'ANILLO ORBITAL', kind: 'ALTA VELOCIDAD', mood: 'ESPACIO · ESTRELLAS', theme: 'highway', width: 18,
+    desc: 'Una autopista que sube hacia las estrellas y baja en espiral. La recta más larga del juego.',
+    medals: [29.1, 31.4, 34.1], laps: 3,
+    pts: [[0, 10, 0], [200, 14, -40], [380, 22, 0], [460, 30, 120], [420, 38, 260], [280, 40, 320], [100, 36, 300], [-40, 28, 240], [-120, 20, 140], [-200, 14, 60], [-260, 12, -40], [-200, 10, -120], [-80, 10, -80]],
+    boosts: [[0.06, 0], [0.45, 0], [0.7, 0.3]],
+    env: { sky: [0x000000, 0x05021a, 0x1a0a4a], fog: [0x05021a, 0.0018], sunCol: 0xb0a0ff, sunI: 0.7, sunDir: [-0.3, 0.7, 0.5], hemi: [0x7a5aff, 0x000010, 0.65], rain: 0, wet: 0.2, stars: true, bloom: 1.1, exposure: 1.1, neon: [0x9d4dff, 0x00f0ff, 0xff2bd6] },
+  },
+  {
+    id: 'glaciar', name: 'GLACIAR NOCTURNO', kind: 'MONTAÑA', mood: 'NOCHE · AURORA', theme: 'mountain', width: 13,
+    desc: 'Horquillas heladas bajo una aurora verde. Estrecho, oscuro y precioso. Aquí se gana derrapando.',
+    medals: [23.2, 25.1, 27.2], laps: 3,
+    pts: [[0, 0, 0], [130, 4, 0], [170, 6, 20], [175, 8, 60], [140, 10, 80], [60, 14, 90], [30, 16, 120], [50, 18, 150], [140, 22, 160], [190, 26, 190], [170, 30, 240], [90, 32, 260], [-20, 30, 250], [-100, 22, 210], [-130, 12, 140], [-120, 5, 60], [-70, 0, 10]],
+    boosts: [[0.03, 0], [0.55, 0], [0.85, 0]],
+    env: { sky: [0x01020a, 0x062a2a, 0x2aff9a], fog: [0x0a2030, 0.003], sunCol: 0x9affd0, sunI: 0.8, sunDir: [0.5, 0.6, -0.5], hemi: [0x6affc8, 0x020818, 0.75], rain: 0, wet: 0.4, stars: true, bloom: 0.9, exposure: 1.0, neon: [0x39ff88, 0x00f0ff, 0xffffff], water: -2 },
+  },
 ];
 
 // ================== RUIDO ==================

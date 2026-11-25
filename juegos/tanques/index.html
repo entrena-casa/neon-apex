@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Tanques Rebote — batalla de tanques neón</title>
+<meta name="description" content="Tanques Rebote: tanques neón en laberintos, balas que rebotan y un disparo mata. Contra bots o con amigos por código. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>
+  :root{--acc:var(--cyan)}
+  #hudTop{position:absolute;top:10px;left:50%;transform:translateX(-50%);text-align:center;font-size:clamp(14px,2.4vw,20px);text-shadow:0 0 10px var(--pink)}
+  #hudTop small{display:block;font-size:10px;letter-spacing:3px;color:var(--dim);margin-top:2px}
+  #board{position:absolute;right:12px;top:12px;font-size:11px;line-height:1.7;text-align:right;background:#05010f99;padding:6px 10px;border-radius:10px}
+  #board b{display:inline-block;min-width:22px}
+  #feed{position:absolute;left:12px;top:48px;font-size:11px;line-height:1.7;letter-spacing:1px}
+  #hp{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:min(320px,60vw);height:12px;border-radius:7px;border:2px solid #ffffff55;overflow:hidden;background:#0008}
+  #hp i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--red),var(--pink));box-shadow:0 0 12px var(--pink)}
+  #wep{position:absolute;left:50%;bottom:32px;transform:translateX(-50%);font-size:11px;letter-spacing:3px;color:var(--gold);text-shadow:0 0 8px var(--gold)}
+  .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;width:min(720px,94vw);margin-top:6px}
+  .mode{text-align:left;padding:14px;border-radius:14px;border:2px solid var(--c);background:var(--panel);color:#fff;box-shadow:0 0 14px color-mix(in srgb,var(--c) 50%,transparent)}
+  .mode b{display:block;font-size:16px;letter-spacing:2px;color:var(--c);text-shadow:0 0 8px var(--c)}
+  .mode span{display:block;font-size:11px;color:var(--dim);margin-top:6px;line-height:1.5;font-family:system-ui}
+  .tbl{width:min(520px,94vw);border-collapse:collapse;font-size:13px;margin:10px 0;background:var(--panel);border-radius:12px;overflow:hidden}
+  .tbl td{padding:7px 10px;border-bottom:1px solid #2a1d4a;text-align:left}.tbl tr.me td{color:var(--cyan)}
+  @media (max-width:700px){#board{font-size:10px}#feed{display:none}}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas>
+<div class="hud hidden" id="hud"><div id="hudTop"></div><div id="board"></div><div id="feed"></div><div id="wep"></div><div id="hp"><i id="hpI"></i></div></div>
+
+<div class="overlay" id="menu">
+  <h1 class="title">TANQUES <span>REBOTE</span></h1>
+  <p class="sub">UN DISPARO · MIL REBOTES · AMIGOS</p>
+  <div class="modes">
+    <button class="mode" style="--c:var(--pink)" id="mFFA"><b>💥 BATALLA</b><span>Tú contra 3 tanques bot. Laberinto nuevo cada ronda. Gana quien llegue a 5 rondas.</span></button>
+    <button class="mode" style="--c:var(--cyan)" id="mWaves"><b>🎯 MISIONES</b><span>20 niveles contra tanques cada vez más listos. Guarda tu progreso.</span></button>
+    <button class="mode" style="--c:var(--gold)" id="mOnline"><b>🌐 CON AMIGOS</b><span>Hasta 6 tanques. Crea una sala y pasa el código.</span></button>
+  </div>
+  <div class="row" style="margin-top:14px"><span class="opt">BOTS<div class="seg" id="sDiff"><button data-v="0">FÁCIL</button><button data-v="1">NORMAL</button><button data-v="2">LOCURA</button></div></span></div>
+  <div class="hint" id="best"></div>
+  <div class="hint keysonly"><kbd>WASD</kbd> / flechas mover el tanque · <kbd>ESPACIO</kbd> / clic disparar · <kbd>RATÓN</kbd> apuntar la torreta · <kbd>P</kbd> pausa · <kbd>M</kbd> sonido · también con mando</div>
+  <div class="hint touchonly">Joystick izquierdo para mover · joystick derecho para apuntar la torreta y disparar</div>
+</div>
+<div class="overlay hidden" id="lobbyBox"></div>
+<div class="overlay hidden" id="over">
+  <h2 class="h" id="oTitle"></h2><div id="oSub" class="sub"></div>
+  <table class="tbl" id="oTbl"></table>
+  <div class="row"><button class="btn small" id="oMenu">MENÚ</button><button class="btn pink" id="oAgain">OTRA</button></div>
+</div>
+<div class="overlay hidden" id="pause"><h2 class="h">PAUSA</h2><div class="col"><button class="btn" id="pRes">SEGUIR</button><button class="btn small" id="pMenu">SALIR AL MENÚ</button></div></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

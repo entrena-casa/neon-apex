@@ -9,7 +9,7 @@ export const DIFFS = {
   normal: { name: 'NORMAL', latA: 25, maxK: 0.95, rubber: 0.08, drift: false, prize: 1 },
   locura: { name: 'LOCURA', latA: 31, maxK: 1.0, rubber: 0.05, drift: true, prize: 1.8 },
 };
-const NAMES = ['VÍBORA', 'KAITO', 'LA REINA', 'TURBO', 'FANTASMA', 'NOVA', 'ÓXIDO', 'RAYITO', 'MAMBA', 'ZAFIRO', 'KOI', 'BLITZ'];
+export const NAMES = ['VÍBORA', 'KAITO', 'LA REINA', 'TURBO', 'FANTASMA', 'NOVA', 'ÓXIDO', 'RAYITO', 'MAMBA', 'ZAFIRO', 'KOI', 'BLITZ'];
 
 export const race = { on: false, cars: [], player: null, ghost: null, remotes: [] };
 
@@ -42,7 +42,7 @@ export function setupRace(opts) {
     let k = 0;
     const pool = CARS.filter(c => c.id !== 'fantasma' || opts.diff === 'locura');
     const list = opts.aiList || [];
-    const names = [...NAMES].sort(() => Math.random() - 0.5);
+    const names = opts.names || [...NAMES].sort(() => Math.random() - 0.5);
     if (!opts.aiList) for (let s = 0; s < total; s++) {
       if (s === pSlot) continue;
       const sp = pool[Math.min(pool.length - 1, Math.floor(Math.random() * (opts.diff === 'facil' ? 3 : opts.diff === 'locura' ? pool.length : 5)))];

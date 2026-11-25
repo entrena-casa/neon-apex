@@ -2,13 +2,13 @@
 import { THREE, $, G, V3, clamp, lerp, wrapAngle, isTouch, scene, camera, composer, followShadow, updateParticles, clearParticles, updateRain, updateMsg, showMsg, toast, popup, fmtTime, emit, burst, QUALITY, setQuality, hexCss, sunDir } from './core.js';
 import { TRACKS, track, buildTrack, updateTrack, skyFollow, sky, sampleAt } from './tracks.js';
 import { CARS, carById, makeCarMesh, setPaint, PAINTS, statOf, respawn, chargeLevel } from './cars.js';
-import { race, setupRace, updateRace, clearRace, DIFFS, loadGhost, aiControl } from './race.js';
+import { race, setupRace, updateRace, clearRace, DIFFS, loadGhost, aiControl, NAMES } from './race.js';
 import { net, hostLobby, joinLobby, leave, updateMe, hostStart, spawnRemotes, placeRemote, updateNet, sendChat } from './net.js';
 import { sfx } from './audio.js';
 
 // ================== PARTIDA GUARDADA ==================
 const SKEY = 'apex.save.v1';
-const save = { credits: 6000, owned: ['zeta', 'pulga'], car: 'zeta', paint: {}, rec: {}, medals: {}, name: '', diff: 'normal', laps: 3, rivals: 7, track: 'distrito', cam: 0, races: 0, wins: 0 };
+const save = { cups: {}, credits: 6000, owned: ['zeta', 'pulga'], car: 'zeta', paint: {}, rec: {}, medals: {}, name: '', diff: 'normal', laps: 3, rivals: 7, track: 'distrito', cam: 0, races: 0, wins: 0 };
 try { Object.assign(save, JSON.parse(localStorage.getItem(SKEY) || '{}')); } catch (e) {}
 if (!save.name) save.name = 'PILOTO' + Math.floor(100 + Math.random() * 900);
 const persist = () => { try { localStorage.setItem(SKEY, JSON.stringify(save)); } catch (e) {} };
@@ -51,6 +51,7 @@ function placePreview() {
 // ================== MENÚ ==================
 $('bRace').onclick = () => openSelect('race');
 $('bTrial').onclick = () => openSelect('trial');
+$('bCup').onclick = () => openSelect('cup');
 $('bOnline').onclick = () => { sfx.ensure(); openLobby(); };
 $('bGarage').onclick = () => openGarage('menu');
 $('bSettings').onclick = () => openSettings('menu');
@@ -76,13 +77,34 @@ function trackPreview(cv, def, sel) {
 }
 const medalOf = (def, t) => !isFinite(t) || !t ? 0 : t <= def.medals[0] ? 3 : t <= def.medals[1] ? 2 : t <= def.medals[2] ? 1 : 0;
 const MEDAL = ['', '🥉', '🥈', '🥇'];
+// ================== CAMPEONATOS ==================
+const CUPS = [
+  { id: 'neon', name: 'COPA NEÓN', col: '#00f0ff', desc: 'Ciudad y autopistas de noche.', tracks: ['distrito', 'horapunta', 'autopista', 'orbital'], prize: 8000 },
+  { id: 'sol', name: 'COPA SOL', col: '#ffd200', desc: 'Costa, cañón, dunas y la tormenta.', tracks: ['bahia', 'canon', 'dunas', 'tormenta'], prize: 10000 },
+  { id: 'cumbre', name: 'COPA CUMBRE', col: '#39ff88', desc: 'La final: montaña, glaciar, cañón y órbita.', tracks: ['montana', 'glaciar', 'canon', 'orbital'], prize: 15000 },
+];
+const CUPPTS = [10, 8, 6, 5, 4, 3, 2, 1];
+let cup = null;
+function renderCups() {
+  const L = $('trackList'); L.innerHTML = '';
+  if (!CUPS.some(c => c.id === save.cup)) save.cup = CUPS[0].id;
+  for (const c of CUPS) {
+    const best = save.cups[c.id], d = document.createElement('div'); d.className = 'tcard' + (save.cup === c.id ? ' sel' : ''); d.style.borderColor = save.cup === c.id ? c.col : '';
+    const def0 = TRACKS.find(t => t.id === c.tracks[0]);
+    d.innerHTML = `<canvas width="320" height="200"></canvas><div class="k" style="color:${c.col}">4 CARRERAS · 2 VUELTAS · PREMIO ${c.prize.toLocaleString('es-ES')} ◆</div><h3 style="color:${c.col}">${c.name} ${best ? ['', '🥇', '🥈', '🥉'][best] || '' : ''}</h3><div class="d">${c.desc}</div><div class="rec">${c.tracks.map(id => TRACKS.find(t => t.id === id).name).join(' · ')}</div>`;
+    d.onclick = () => { save.cup = c.id; persist(); renderCups(); ensureTrack(c.tracks[0]); };
+    L.appendChild(d); trackPreview(d.querySelector('canvas'), def0, save.cup === c.id);
+  }
+  document.querySelectorAll('#raceOpts .seg').forEach(sg => sg.querySelectorAll('button').forEach(b => { b.classList.toggle('on', String(save[sg.dataset.k]) === b.dataset.v); b.onclick = () => { save[sg.dataset.k] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; persist(); renderCups(); }; }));
+}
 function openSelect(m) {
   selMode = m; sfx.ensure();
-  $('selTitle').textContent = m === 'trial' ? 'CONTRARRELOJ' : 'CARRERA';
-  $('oDiff').classList.toggle('hidden', m === 'trial'); $('oRivals').classList.toggle('hidden', m === 'trial'); $('oLaps').classList.toggle('hidden', m === 'trial');
+  $('selTitle').textContent = m === 'trial' ? 'CONTRARRELOJ' : m === 'cup' ? 'CAMPEONATO' : 'CARRERA';
+  $('oDiff').classList.toggle('hidden', m === 'trial'); $('oRivals').classList.toggle('hidden', m === 'trial'); $('oLaps').classList.toggle('hidden', m === 'trial' || m === 'cup');
   renderTracks(); show('select');
 }
 function renderTracks() {
+  if (selMode === 'cup') return renderCups();
   const L = $('trackList'); L.innerHTML = '';
   for (const def of TRACKS) {
     const r = save.rec[def.id] || {}, md = save.medals[def.id] || 0;
@@ -99,11 +121,15 @@ $('selCar').onclick = () => openGarage('select');
 $('selGo').onclick = () => startRace();
 
 function startRace() {
+  if (selMode === 'cup') {
+    if (!cup) { const def = CUPS.find(c => c.id === save.cup) || CUPS[0]; cup = { def, i: 0, pts: {}, names: [...NAMES].sort(() => Math.random() - 0.5), done: false }; toast(`🏆 <b>${def.name}</b><br>4 carreras · puntos 10-8-6-5-4-3-2-1`, 3500); }
+    save.track = cup.def.tracks[cup.i];
+  } else cup = null;
   ensureTrack(save.track);
   if (preview) preview.visible = false;
   const opts = selMode === 'trial'
     ? { mode: 'trial', laps: 99, car: save.car, paint: paintOf(save.car), name: save.name }
-    : { mode: 'race', laps: save.laps, diff: save.diff, rivals: save.rivals, car: save.car, paint: paintOf(save.car), name: save.name, gridPos: save.rivals };
+    : { mode: 'race', laps: cup ? 2 : save.laps, diff: save.diff, rivals: save.rivals, car: save.car, paint: paintOf(save.car), name: save.name, gridPos: cup ? Math.max(0, save.rivals - cup.i * 2) : save.rivals, names: cup ? cup.names : undefined };
   setupRace(opts);
   lastOpts = opts;
   afterSetup();
@@ -142,6 +168,22 @@ G.onResults = res => {
   $('rReward').textContent = reward ? `+${reward.toLocaleString('es-ES')} CRÉDITOS` : '';
   $('rNext').classList.toggle('hidden', race.mode === 'online');
   $('rAgain').textContent = race.mode === 'online' ? 'VOLVER A LA SALA' : 'REPETIR';
+  $('rAgain').classList.remove('hidden'); $('rNext').textContent = 'SIGUIENTE CIRCUITO';
+  if (cup && race.mode === 'race') {
+    res.rows.forEach((r, i) => { const n = r.me ? save.name : r.name; cup.pts[n] = (cup.pts[n] || 0) + (r.time ? CUPPTS[i] || 0 : 0); });
+    const tab = Object.entries(cup.pts).sort((a, b) => b[1] - a[1]), pos = tab.findIndex(e => e[0] === save.name);
+    const last = cup.i >= cup.def.tracks.length - 1;
+    $('rTable').innerHTML = `<tr><td colspan="3" style="color:${cup.def.col}">${cup.def.name} · CARRERA ${cup.i + 1}/4</td></tr>` + tab.map(([n, p], i) => `<tr class="${n === save.name ? 'me' : ''}"><td>${i + 1}º</td><td>${esc(n)}</td><td>${p} PTS</td></tr>`).join('');
+    $('rAgain').classList.add('hidden');
+    if (last) {
+      cup.done = true; const place = pos + 1, prize = place <= 3 ? Math.round(cup.def.prize * [1, 0.55, 0.3][place - 1]) : 0;
+      save.credits += prize; if (place <= 3 && (!save.cups[cup.def.id] || place < save.cups[cup.def.id])) save.cups[cup.def.id] = place; persist();
+      $('rTitle').textContent = place === 1 ? '🏆 ¡CAMPEÓN!' : place <= 3 ? `PODIO: ${place}º` : `CAMPEONATO: ${place}º`;
+      $('rMedal').textContent = place <= 3 ? ['', '🥇', '🥈', '🥉'][place] + ' ' + cup.def.name : 'Hay que quedar entre los 3 primeros';
+      $('rReward').textContent = prize ? `+${(prize + reward).toLocaleString('es-ES')} CRÉDITOS` : $('rReward').textContent;
+      $('rNext').textContent = 'TERMINAR';
+    } else $('rNext').textContent = 'SIGUIENTE: ' + TRACKS.find(t => t.id === cup.def.tracks[cup.i + 1]).name;
+  }
   setTimeout(() => show('results'), 400);
 };
 function finishTrialToResults() { // en contrarreloj, salir guarda el récord
@@ -150,8 +192,8 @@ function finishTrialToResults() { // en contrarreloj, salir guarda el récord
 }
 $('rMenu').onclick = () => toMenu();
 $('rAgain').onclick = () => { if (race.mode === 'online' || lastOpts?.mode === 'online') { clearRace(); openLobby(); } else { setupRace(lastOpts); afterSetup(); } };
-$('rNext').onclick = () => { const i = TRACKS.findIndex(t => t.id === save.track); save.track = TRACKS[(i + 1) % TRACKS.length].id; persist(); startRace(); };
-function toMenu() { clearRace(); G.paused = false; placePreview(); show('menu'); }
+$('rNext').onclick = () => { if (cup) { if (cup.done) { cup = null; return toMenu(); } cup.i++; return startRace(); } const i = TRACKS.findIndex(t => t.id === save.track); save.track = TRACKS[(i + 1) % TRACKS.length].id; persist(); startRace(); };
+function toMenu() { cup = null; clearRace(); G.paused = false; placePreview(); show('menu'); }
 
 // ---------- pausa ----------
 function togglePause() {

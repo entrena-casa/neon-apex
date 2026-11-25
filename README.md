@@ -1,13 +1,12 @@
-# Neon Apex
+# Neon Arcade
 
-Juego de carreras 3D neón en el navegador (también en el móvil).
+Juegos neón gratis en el navegador (PC y móvil). **Jugar:** https://entrena-casa.github.io/neon-apex/
 
-**Jugar:** https://entrena-casa.github.io/neon-apex/
+- **Neon Apex** (`apex/`): carreras 3D, 10 circuitos, campeonatos, contrarreloj con fantasma y multijugador.
+- **Neon Arena** (`juegos/arena/`): tiros cenitales, todos contra todos y oleadas con jefes.
+- **Tanques Rebote** (`juegos/tanques/`): laberintos aleatorios y balas que rebotan; 20 misiones.
+- **Snake Royale** (`juegos/snake/`): serpientes neón, royale de 3 minutos.
+- **Fútbol Coches** (`juegos/futbol/`): fútbol con coches, liga de 8 jornadas.
 
-- 5 circuitos: callejero bajo la lluvia, costa al atardecer, cañón con saltos, autopista en ocho y puerto de montaña.
-- 6 coches con colores a elegir.
-- Derrape con miniturbo, salida perfecta, rebufo, placas de turbo y nitro.
-- Contrarreloj contra tu fantasma, con medallas.
-- Multijugador: crea una sala y pasa el código de 5 letras.
-
-Controles: W/S acelerar y frenar, A/D girar, Espacio derrape (suéltalo para el miniturbo), Shift nitro, R volver a la pista, C cámara, P pausa. Con mando también. En el móvil: desliza el dedo para girar.
+Multijugador: uno crea la sala y los demás entran con el código de 5 letras (PeerJS, sin servidor propio).
+Código común en `comun/` (controles táctiles, mando, sonido sintetizado, salas).

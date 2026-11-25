@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://entrena-casa.github.io/neon-apex/</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://entrena-casa.github.io/neon-apex/</loc></url>
+<url><loc>https://entrena-casa.github.io/neon-apex/apex/</loc></url>
+<url><loc>https://entrena-casa.github.io/neon-apex/juegos/arena/</loc></url>
+<url><loc>https://entrena-casa.github.io/neon-apex/juegos/tanques/</loc></url>
+<url><loc>https://entrena-casa.github.io/neon-apex/juegos/snake/</loc></url>
+<url><loc>https://entrena-casa.github.io/neon-apex/juegos/futbol/</loc></url>
+</urlset>
