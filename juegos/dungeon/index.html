@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Dungeon Neón — mazmorras por turnos</title>
+<meta name="description" content="Dungeon Neón: mazmorras por turnos con historia. 10 pisos aleatorios, monstruos, tesoros, tienda y un jefe final. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>
+  :root{--acc:#39ff88}
+  #bar{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 60px 6px 110px;font-size:12px;letter-spacing:2px;pointer-events:none;text-shadow:0 0 6px #000}
+  #bar b{color:#fff}
+  #log{position:fixed;left:12px;bottom:12px;z-index:10;font-family:system-ui;font-size:13px;line-height:1.5;max-width:min(460px,60vw);pointer-events:none;text-shadow:0 0 4px #000}
+  #log div{opacity:.9}#log div:nth-child(n+3){opacity:.5}
+  #acts{position:fixed;right:12px;bottom:12px;z-index:10;display:flex;gap:8px}
+  #acts button{min-width:62px;height:62px;border-radius:14px;border:2px solid #3b2a6a;background:#0d0524dd;color:#fff;font-size:22px;position:relative}
+  #acts button small{position:absolute;left:0;right:0;bottom:3px;font-size:8px;letter-spacing:1px;font-family:Orbitron}
+  #acts button:disabled{opacity:.35}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas>
+<div id="bar" class="hidden"></div><div id="log" class="hidden"></div>
+<div id="acts" class="hidden"><button id="aPot">🧪<small id="nPot">0</small></button><button id="aScr">📜<small id="nScr">0</small></button><button id="aWait">⏳<small>ESPERAR</small></button></div>
+<div class="overlay" id="menu">
+  <h1 class="title" style="--acc:#39ff88">DUNGEON <span>NEÓN</span></h1>
+  <p class="sub">10 PISOS · UNA LUZ · UN REY DE SOMBRAS</p>
+  <div class="col"><button class="btn green" id="bPlay">BAJAR A LA MAZMORRA</button></div>
+  <div class="hint" id="best"></div>
+  <div class="hint keysonly"><kbd>WASD</kbd> / flechas moverse y atacar (choca contra un monstruo para pegarle) · <kbd>Q</kbd> poción · <kbd>E</kbd> pergamino de fuego · <kbd>ESPACIO</kbd> esperar · <kbd>CLIC</kbd> en una casilla para ir allí</div>
+  <div class="hint touchonly">Toca una casilla para ir allí · toca un monstruo pegado a ti para atacar · 🧪 poción · 📜 fuego · ⏳ esperar</div>
+</div>
+<div class="overlay hidden" id="over"><h2 class="h" id="oTitle"></h2><p class="sub" id="oSub" style="max-width:620px;line-height:1.8;letter-spacing:1px;font-family:system-ui"></p><div class="row"><button class="btn small" id="oMenu">MENÚ</button><button class="btn green" id="oAgain">OTRA VEZ</button></div></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

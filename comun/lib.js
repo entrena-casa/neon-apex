@@ -46,7 +46,8 @@ export function setupCanvas(canvas) {
 }
 export function loop(fn) {
   let last = performance.now();
-  const f = now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; fn(dt, now / 1000); requestAnimationFrame(f); };
+  let errs = 0;
+  const f = now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; requestAnimationFrame(f); try { fn(dt, now / 1000); } catch (e) { if (errs++ < 3) console.error(e); } };
   requestAnimationFrame(f);
 }
 

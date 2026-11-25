@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Pulso — esquiva al ritmo</title>
+<meta name="description" content="Pulso: esquiva láseres, muros y bombas al ritmo de la música. 5 niveles synthwave. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>:root{--acc:#ff2bd6}
+.ms{display:flex;flex-direction:column;gap:10px;width:min(520px,94vw);margin:8px 0}
+.ms button{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;border:2px solid #3b2a6a;background:var(--panel);color:#fff;font-weight:900;letter-spacing:2px;font-size:14px;text-align:left}
+.ms button:disabled{opacity:.35}.ms button span{color:var(--gold);letter-spacing:3px;font-size:12px}
+#prog{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--pink));z-index:10;box-shadow:0 0 10px var(--pink)}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas><div id="prog" class="hidden"></div>
+<div class="overlay" id="menu">
+  <h1 class="title">PUL<span>SO</span></h1>
+  <p class="sub">ESQUIVA AL RITMO</p>
+  <div class="ms" id="lv"></div>
+  <div class="hint keysonly"><kbd>WASD</kbd> / flechas moverse · <kbd>ESPACIO</kbd> / <kbd>SHIFT</kbd> impulso (eres invencible un instante) · <kbd>P</kbd> pausa · con mando también</div>
+  <div class="hint touchonly">Joystick para moverte · botón IMPULSO para atravesar peligros</div>
+</div>
+<div class="overlay hidden" id="over"><h2 class="h" id="oTitle"></h2><p class="sub" id="oSub"></p><div class="row"><button class="btn small" id="oMenu">MENÚ</button><button class="btn pink" id="oAgain">OTRA VEZ</button></div></div>
+<div class="overlay hidden" id="pause"><h2 class="h">PAUSA</h2><div class="col"><button class="btn" id="pRes">SEGUIR</button><button class="btn small" id="pMenu">MENÚ</button></div></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

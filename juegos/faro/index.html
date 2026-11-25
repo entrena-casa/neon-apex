@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Faro 13 — misterio en una isla</title>
+<meta name="description" content="Faro 13: aventura de misterio. Explora un faro abandonado, resuelve puzles y descubre qué le pasó al farero. Varios finales. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>
+  :root{--acc:#00f0ff}
+  #inv{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:12;display:flex;gap:8px;padding:8px 10px;border-radius:14px;background:#0b0322dd;border:1.5px solid #3b2a6a;max-width:96vw;overflow-x:auto}
+  #inv button{min-width:58px;height:58px;border-radius:10px;border:2px solid #3b2a6a;background:#160a36;color:#fff;font-size:24px;position:relative}
+  #inv button.on{border-color:var(--gold);box-shadow:0 0 12px var(--gold)}
+  #inv button small{position:absolute;left:0;right:0;bottom:2px;font-size:7px;letter-spacing:1px;font-family:Orbitron}
+  #inv .lbl{align-self:center;font-size:10px;letter-spacing:2px;color:var(--dim);padding:0 6px}
+  #place{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:12;font-size:12px;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 8px var(--cyan);pointer-events:none}
+  #pages{position:fixed;right:12px;top:10px;z-index:12;font-size:12px;letter-spacing:2px;color:var(--gold);pointer-events:none}
+  #code{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#05010fcc}
+  #code .panel{text-align:center}#code .digits{display:flex;gap:10px;justify-content:center;margin:14px 0}
+  #code .d{display:flex;flex-direction:column;gap:6px;align-items:center}#code .d b{font-size:44px;width:60px;padding:6px 0;border:2px solid var(--cyan);border-radius:10px;color:#fff}
+  #code .d button{width:60px;height:40px;border-radius:8px;border:1.5px solid #3b2a6a;background:#160a36;color:#fff;font-size:18px}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas>
+<div id="place" class="hidden"></div><div id="pages" class="hidden"></div><div id="inv" class="hidden"></div>
+<div id="code" class="hidden"></div>
+<div class="overlay" id="menu">
+  <h1 class="title">FARO <span>13</span></h1>
+  <p class="sub">UNA ISLA · UNA LUZ APAGADA · UN SECRETO</p>
+  <div class="col"><button class="btn" id="bPlay">EMPEZAR</button><button class="btn small hidden" id="bNew">NUEVA PARTIDA</button></div>
+  <div class="hint">Toca o haz clic en las cosas para mirarlas. Para usar un objeto, selecciónalo abajo y luego toca dónde quieres usarlo.</div>
+</div>
+<div class="overlay hidden" id="over"><h2 class="h" id="oTitle"></h2><p class="sub" id="oSub" style="max-width:620px;line-height:1.8;letter-spacing:1px;font-family:system-ui"></p><button class="btn" id="oMenu">MENÚ</button></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

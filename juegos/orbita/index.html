@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Órbita Rota — misiones espaciales con historia</title>
+<meta name="description" content="Órbita Rota: misiones espaciales con historia. Repara tu nave entre asteroides, mejora sus piezas y vuelve a casa. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>
+  :root{--acc:#9d4dff}
+  #hudT{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:10;text-align:center;font-weight:900;letter-spacing:3px;font-size:clamp(12px,2.2vw,17px);pointer-events:none;text-shadow:0 0 10px #000}
+  #hudT small{display:block;font-size:10px;color:var(--dim);margin-top:3px}
+  #hudB{position:fixed;left:12px;bottom:12px;z-index:10;font-size:13px;letter-spacing:2px;pointer-events:none}
+  #alarm{position:fixed;inset:0;z-index:9;pointer-events:none;box-shadow:inset 0 0 120px #ff2a4d;opacity:0;transition:opacity .3s}
+  .ms{display:flex;flex-direction:column;gap:10px;width:min(520px,94vw);margin:8px 0}
+  .ms button{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:14px;border:2px solid #3b2a6a;background:var(--panel);color:#fff;font-weight:900;letter-spacing:2px;font-size:14px;text-align:left}
+  .ms button:disabled{opacity:.35}.ms button span{color:var(--gold);letter-spacing:4px}
+  @media (pointer:coarse){#hudB{bottom:auto;top:46px}}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas>
+<div id="alarm"></div>
+<div id="hudT" class="hidden"></div><div id="hudB" class="hidden"></div>
+<div class="overlay" id="menu">
+  <h1 class="title" style="--acc:#9d4dff">ÓRBITA <span>ROTA</span></h1>
+  <p class="sub">CHATARRA · ASTEROIDES · VOLVER A CASA</p>
+  <div class="col"><button class="btn violet" id="bPlay">JUGAR</button><button class="btn small gold" id="bShop">TALLER</button></div>
+  <div class="ms" id="msList"></div>
+  <div class="hint keysonly"><kbd>W</kbd> propulsar · <kbd>A D</kbd> girar · <kbd>RATÓN</kbd> apuntar · <kbd>ESPACIO</kbd> / clic disparar · <kbd>SHIFT</kbd> turbo · <kbd>P</kbd> pausa · también con mando</div>
+  <div class="hint touchonly">Joystick: la nave va hacia donde apuntas · FUEGO dispara · TURBO acelera</div>
+</div>
+<div class="overlay hidden" id="shop"><h2 class="h">TALLER</h2><div class="sub" id="shopMoney"></div><div class="ms" id="shopList"></div><button class="btn small" id="shopBack">VOLVER</button></div>
+<div class="overlay hidden" id="pause"><h2 class="h">PAUSA</h2><div class="col"><button class="btn" id="pRes">SEGUIR</button><button class="btn small" id="pRestart">REINICIAR MISIÓN</button><button class="btn small" id="pMenu">MENÚ</button></div></div>
+<div class="overlay hidden" id="over"><h2 class="h" id="oTitle"></h2><p class="sub" id="oSub" style="max-width:600px;line-height:1.8"></p><div class="row"><button class="btn small" id="oMenu">MENÚ</button><button class="btn violet" id="oNext">SIGUIENTE</button></div></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>ECO — plataformas entre dos épocas</title>
+<meta name="description" content="ECO: juego de plataformas con historia. Salta entre el pasado y el presente para encontrar a tu hermana. Gratis en el navegador y el móvil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../comun/neon.css">
+<style>
+  :root{--acc:#39ff88}
+  #hudL{position:fixed;left:12px;top:48px;z-index:10;font-size:12px;letter-spacing:2px;line-height:1.8;pointer-events:none}
+  #era{position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:10;font-weight:900;letter-spacing:6px;font-size:clamp(14px,2.6vw,22px);pointer-events:none;transition:color .2s,text-shadow .2s}
+  .lv{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;width:min(520px,92vw);margin:10px 0}
+  .lv button{aspect-ratio:1;border-radius:12px;border:2px solid #3b2a6a;background:var(--panel);color:#fff;font-weight:900;font-size:16px}
+  .lv button.done{border-color:var(--green);box-shadow:0 0 10px #39ff8866}.lv button:disabled{opacity:.3}
+  .lv button small{display:block;font-size:9px;color:var(--gold);margin-top:2px}
+</style>
+</head>
+<body>
+<canvas class="game" id="c"></canvas>
+<div id="era" class="hidden"></div>
+<div id="hudL" class="hidden"></div>
+<div class="overlay" id="menu">
+  <h1 class="title" style="--acc:#39ff88">E<span>C</span>O</h1>
+  <p class="sub">DOS ÉPOCAS · UNA HERMANA · UN RELOJ</p>
+  <div class="col"><button class="btn green" id="bPlay">JUGAR</button><button class="btn small" id="bLevels">NIVELES</button></div>
+  <div class="hint keysonly"><kbd>← →</kbd> / <kbd>A D</kbd> moverse · <kbd>ESPACIO</kbd> / <kbd>W</kbd> saltar · <kbd>SHIFT</kbd> / <kbd>K</kbd> cambiar de época · <kbd>R</kbd> reiniciar · <kbd>P</kbd> pausa · también con mando</div>
+  <div class="hint touchonly">Botones ◀ ▶ para moverte · SALTO · ⧗ cambia de época (también en el aire)</div>
+  <div class="hint" id="prog"></div>
+</div>
+<div class="overlay hidden" id="levels"><h2 class="h">NIVELES</h2><div class="lv" id="lvList"></div><button class="btn small" id="lvBack">VOLVER</button></div>
+<div class="overlay hidden" id="pause"><h2 class="h">PAUSA</h2><div class="col"><button class="btn" id="pRes">SEGUIR</button><button class="btn small" id="pRestart">REINICIAR NIVEL</button><button class="btn small hidden" id="pSkip">SALTAR NIVEL</button><button class="btn small" id="pMenu">MENÚ</button></div></div>
+<div class="overlay hidden" id="over"><h2 class="h" id="oTitle"></h2><p class="sub" id="oSub" style="max-width:600px;line-height:1.8;letter-spacing:2px"></p><button class="btn green" id="oMenu">MENÚ</button></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>
