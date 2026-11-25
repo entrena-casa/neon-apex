@@ -25,7 +25,7 @@ function show(id) {
   for (const s of SCREENS) $(s).classList.toggle('hidden', s !== id);
   const racing = id === null || id === 'pause';
   $('hud').classList.toggle('hidden', !race.on || !racing && id !== 'pause');
-  $('touch').classList.toggle('hidden', !(isTouch && race.on && id === null));
+  $('touch').classList.toggle('hidden', !(G.touchUsed && race.on && id === null));
   G.music = true;
   renderCredits();
 }
@@ -110,6 +110,11 @@ function startRace() {
 }
 let lastOpts = null;
 function afterSetup() {
+  // móvil: pantalla completa y en horizontal si el navegador lo deja
+  if (G.touchUsed && !document.fullscreenElement && document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen({ navigationUI: 'hide' }).then(() => window.screen.orientation?.lock?.('landscape').catch(() => {})).catch(() => {});
+  }
+  const rh = $('rotHint'); rh.style.opacity = 1; setTimeout(() => rh.style.opacity = 0, 5000);
   camInit = true; G.paused = false; wrongT = 0;
   show(null);
   showMsg(track.def.name, '#fff', 2.2);
@@ -264,7 +269,13 @@ addEventListener('blur', () => { for (const k in keys) keys[k] = false; if (race
 const down = (...k) => k.some(x => keys[x]);
 // táctil: volante deslizando el dedo + botones
 const touch = { steer: 0, drift: false, nitro: false, brake: false, id: null, x0: 0 };
-if (isTouch) {
+// controles táctiles: siempre enlazados; salen si el aparato es táctil o en cuanto se toca la pantalla
+G.touchUsed = isTouch;
+addEventListener('touchstart', () => {
+  if (G.touchUsed) return; G.touchUsed = true;
+  if (race.on && screen === null) $('touch').classList.remove('hidden');
+}, { passive: true });
+{
   const z = $('steerZone'), knob = $('steerKnob'), base = $('steerBase');
   z.addEventListener('touchstart', e => { e.preventDefault(); const t = e.changedTouches[0]; touch.id = t.identifier; touch.x0 = t.clientX; knob.style.display = base.style.display = 'block'; base.style.left = knob.style.left = t.clientX + 'px'; base.style.top = knob.style.top = (t.clientY - z.getBoundingClientRect().top) + 'px'; }, { passive: false });
   z.addEventListener('touchmove', e => { e.preventDefault(); for (const t of e.changedTouches) if (t.identifier === touch.id) { touch.steer = clamp((t.clientX - touch.x0) / 80, -1, 1); knob.style.left = (touch.x0 + touch.steer * 80) + 'px'; } }, { passive: false });
@@ -276,7 +287,7 @@ if (isTouch) {
     const off = e => { e.preventDefault(); touch[k] = false; b.classList.remove('on'); };
     b.addEventListener('touchend', off); b.addEventListener('touchcancel', off);
   }
-  $('keysHint').textContent = 'MÓVIL: desliza el dedo a la izquierda de la pantalla para girar · acelera solo · mantén DERRAPE en las curvas y suéltalo para el miniturbo';
+  if (isTouch) $('keysHint').textContent = 'MÓVIL: desliza el dedo a la izquierda de la pantalla para girar · acelera solo · mantén DERRAPE en las curvas y suéltalo para el miniturbo';
 }
 let kSteer = 0;
 function readInput(dt) {
@@ -299,7 +310,7 @@ function readInput(dt) {
     if (gp.buttons[2]?.pressed || gp.buttons[1]?.pressed || gp.buttons[4]?.pressed) ctl.nitro = true;
     if (gp.buttons[9]?.pressed && !gp._p) { togglePause(); } gp._p = gp.buttons[9]?.pressed;
   }
-  if (isTouch && race.on) {
+  if (G.touchUsed && race.on) {
     if (touch.id !== null) ctl.steer = Math.sign(touch.steer) * Math.pow(Math.abs(touch.steer), 1.3);
     ctl.throttle = touch.brake ? -1 : 1;
     if (!race.go) ctl.throttle = touch.brake ? 0 : 0;
@@ -452,6 +463,8 @@ function frame() {
 ensureTrack(save.track);
 show('menu');
 frame();
+addEventListener('pointerdown', () => sfx.ensure(), { once: true });
+window.NR && NR.done();
 if (location.hash === '#dbg') window.dbg = {
   // simula sin dibujar; auto = el jugador conduce con la IA
   sim(sec, auto = true) { const P = race.player; if (auto) P.ai = P.ai || { bias: 0, skill: 1, react: 0, nitroT: 0 }; const n = Math.round(sec * 60); for (let i = 0; i < n && race.on; i++) { const ctl = auto ? (race.go ? aiControl(P, 1 / 60) : { throttle: 0, steer: 0 }) : { throttle: 1, steer: 0 }; updateRace(1 / 60, ctl, ev); } return { t: race.t, lap: P.lap, best: race.best, laps: race.lapTimes, place: P.place, fin: P.finished, order: race.order && race.order.map(c => c.name + ':' + c.lap + (c.finished ? '*' + c.finishT.toFixed(1) : '')) }; }, race, track, save, G, camera, startRace, openSelect, ensureTrack, net, TRACKS, show };

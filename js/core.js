@@ -13,7 +13,7 @@ export const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); r
 export const wrapAngle = a => { while (a > Math.PI) a -= Math.PI * 2; while (a < -Math.PI) a += Math.PI * 2; return a; };
 export function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 export const V3 = THREE.Vector3;
-export const isTouch = matchMedia('(pointer:coarse)').matches;
+export const isTouch = matchMedia('(pointer:coarse)').matches || (navigator.maxTouchPoints > 0 && matchMedia('(hover:none)').matches);
 export const fmtTime = t => { if (!isFinite(t) || t <= 0) return '--:--.---'; const m = Math.floor(t / 60), s = t - m * 60; return `${m}:${s.toFixed(3).padStart(6, '0')}`; };
 export const G = { t: 0, shake: 0 };
 
@@ -29,7 +29,10 @@ export function setQuality(q) { try { localStorage.setItem('apex.q', q); } catch
 
 // ================== RENDER ==================
 export const canvas = $('game');
-export const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+let _r;
+try { _r = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' }); }
+catch (e) { throw new Error('tu navegador no deja usar gráficos 3D (WebGL). Activa la aceleración por hardware o prueba con Chrome/Safari actualizados.'); }
+export const renderer = _r;
 renderer.setPixelRatio(Math.min(devicePixelRatio, Q.pr));
 renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
